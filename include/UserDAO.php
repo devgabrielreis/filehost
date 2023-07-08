@@ -14,11 +14,11 @@
         {
             $user = new User();
 
-            $user->id = (isset($data["id"]) ? $data["id"] : null);
-            $user->name = (isset($data["name"]) ? $data["name"] : null);
-            $user->usedStorage = (isset($data["used_storage"]) ? $data["used_storage"] : null);
-            $user->email = (isset($data["email"]) ? $data["email"] : null);
-            $user->passwordHash = (isset($data["password_hash"]) ? $data["password_hash"] : null);
+            $user->setId(isset($data["id"]) ? $data["id"] : null);
+            $user->setName(isset($data["name"]) ? $data["name"] : null);
+            $user->setUsedStorage(isset($data["used_storage"]) ? $data["used_storage"] : null);
+            $user->setEmail(isset($data["email"]) ? $data["email"] : null);
+            $user->setPassword(isset($data["password_hash"]) ? $data["password_hash"] : null, true);
 
             return $user;
         }
@@ -31,10 +31,10 @@
                 :name, :used_storage, :email, :password_hash
             )");
         
-            $stmt->bindParam(":name", $user->name);
+            $stmt->bindParam(":name", $user->getName());
             $stmt->bindValue(":used_storage", 0);
-            $stmt->bindParam(":email", $user->email);
-            $stmt->bindParam(":password_hash", $user->passwordHash);
+            $stmt->bindParam(":email", $user->getEmail());
+            $stmt->bindParam(":password_hash", $user->getPasswordHash());
 
             $stmt->execute();
 
@@ -86,6 +86,18 @@
             $stmt->execute();
 
             return $stmt->rowCount() > 0;
+        }
+
+        public function getLoggedUser() : ?User
+        {
+            if(empty($_SESSION["token"]))
+            {
+                return null;
+            }
+
+            $loggedUser = $this->getUserByToken($_SESSION["token"]);
+
+            return $loggedUser;
         }
 
         public function getUserByToken(string $token) : ?User
@@ -168,16 +180,7 @@
                 return null;
             }
 
-            // loop para evitar que dois token sejam iguais
-            do
-            {
-                $token = bin2hex(random_bytes(50));
-
-                $stmt = $this->conn->prepare("SELECT COUNT(*) FROM tokens WHERE token = :token");
-                $stmt->bindParam(":token", $token);
-                $stmt->execute();
-            }
-            while ($stmt->fetchColumn() > 0);
+            $token = $this->generateNewToken();
 
             $stmt = $this->conn->prepare("INSERT INTO tokens (
                 token, expires, revoked, user_id
@@ -188,7 +191,7 @@
             $stmt->bindParam(":token", $token);
             $stmt->bindParam(":expires", $tokenExpirationDate);
             $stmt->bindValue(":revoked", 0);
-            $stmt->bindParam(":user_id", $user->id);
+            $stmt->bindParam(":user_id", $user->getId());
 
             $stmt->execute();
 
@@ -205,6 +208,21 @@
             $stmt = $this->conn->prepare("UPDATE tokens SET revoked = 1 WHERE token = :token");
             $stmt->bindParam(":token", $token);
             $stmt->execute();
+        }
+
+        public function generateNewToken() : string
+        {
+            do
+            {
+                $token = bin2hex(random_bytes(50));
+
+                $stmt = $this->conn->prepare("SELECT COUNT(*) FROM tokens WHERE token = :token");
+                $stmt->bindParam(":token", $token);
+                $stmt->execute();
+            }
+            while ($stmt->fetchColumn() > 0);
+
+            return $token;
         }
     }
 ?>

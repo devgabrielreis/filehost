@@ -9,14 +9,7 @@
     $userDao = new UserDAO(createDatabaseConnection());
     $message = new Message();
 
-    if(empty($_SESSION["token"]))
-    {
-        $message->set("You are not logged in", Message::TYPE_ERROR);
-        header("Location: " . BASE_URL);
-        exit();
-    }
-
-    $loggedUser = $userDao->getUserByToken($_SESSION["token"]);
+    $loggedUser = $userDao->getLoggedUser();
 
     if(!$loggedUser)
     {
@@ -40,7 +33,7 @@
             <select name="visibility" id="visibility" required>
                 <option value="">Select</option>
                 <option value="private">Private</option>
-                <option value="restricted">Restricted</option>
+                <option value="restrict">Restrict</option>
                 <option value="public">Public</option>
             </select>
         </div>

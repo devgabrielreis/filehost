@@ -10,14 +10,7 @@
     $userDao = new UserDAO(createDatabaseConnection());
     $message = new Message();
 
-    if(empty($_SESSION["token"]))
-    {
-        $message->set("You are not logged in", Message::TYPE_ERROR);
-        header("Location: " . BASE_URL);
-        exit();
-    }
-
-    $loggedUser = $userDao->getUserByToken($_SESSION["token"]);
+    $loggedUser = $userDao->getLoggedUser();
 
     if(!$loggedUser)
     {
@@ -33,7 +26,7 @@
         $name = filter_input(INPUT_POST, "name");
         $password = filter_input(INPUT_POST, "password");
 
-        if(!password_verify($password, $loggedUser->passwordHash))
+        if(!$loggedUser->comparePassword($password))
         {
             $message->set("Invalid password", Message::TYPE_ERROR);
             header("Location: " . BASE_URL . "/account.php");
@@ -64,7 +57,7 @@
             exit();
         }
 
-        $userDao->changeName($loggedUser->id, $name);
+        $userDao->changeName($loggedUser->getId(), $name);
 
         $message->set("Username changed successfully", Message::TYPE_SUCCESS);
         header("Location: " . BASE_URL . "/account.php");
@@ -82,7 +75,7 @@
             exit();
         }
 
-        if(!password_verify($password, $loggedUser->passwordHash))
+        if(!$loggedUser->comparePassword($password))
         {
             $message->set("Invalid password", Message::TYPE_ERROR);
             header("Location: " . BASE_URL . "/account.php");
@@ -113,7 +106,7 @@
             exit();
         }
 
-        $userDao->changeEmail($loggedUser->id, $email);
+        $userDao->changeEmail($loggedUser->getId(), $email);
 
         $message->set("Email changed successfully", Message::TYPE_SUCCESS);
         header("Location: " . BASE_URL . "/account.php");
@@ -132,7 +125,7 @@
             exit();
         }
 
-        if(!password_verify($oldPassword, $loggedUser->passwordHash))
+        if(!$loggedUser->comparePassword($password))
         {
             $message->set("Invalid password", Message::TYPE_ERROR);
             header("Location: " . BASE_URL . "/account.php");
@@ -155,7 +148,7 @@
             exit();
         }
 
-        $userDao->changePassword($loggedUser->id, password_hash($newPassword, PASSWORD_DEFAULT));
+        $userDao->changePassword($loggedUser->getId(), password_hash($newPassword, PASSWORD_DEFAULT));
 
         $message->set("Password changed successfully", Message::TYPE_SUCCESS);
         header("Location: " . BASE_URL . "/account.php");

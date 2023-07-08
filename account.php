@@ -9,14 +9,7 @@
     $userDao = new UserDAO(createDatabaseConnection());
     $message = new Message();
 
-    if(empty($_SESSION["token"]))
-    {
-        $message->set("You are not logged in", Message::TYPE_ERROR);
-        header("Location: " . BASE_URL);
-        exit();
-    }
-
-    $loggedUser = $userDao->getUserByToken($_SESSION["token"]);
+    $loggedUser = $userDao->getLoggedUser();
 
     if(!$loggedUser)
     {

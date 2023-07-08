@@ -10,7 +10,7 @@
     $userDao = new UserDAO(createDatabaseConnection());
     $message = new Message();
 
-    if(!empty($_SESSION["token"]) && $userDao->getUserByToken($_SESSION["token"]))
+    if($userDao->getLoggedUser())
     {
         header("Location: " . BASE_URL . "/home.php");
         exit();
@@ -79,9 +79,9 @@
 
     $user = new User();
 
-    $user->name = $name;
-    $user->email = $email;
-    $user->passwordHash = password_hash($password, PASSWORD_DEFAULT);
+    $user->setName($name);
+    $user->setEmail($email);
+    $user->setPassword($password);
 
     $userId = $userDao->createUser($user);
 

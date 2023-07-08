@@ -5,12 +5,12 @@
     class FileDAO implements FileDAOInterface
     {
         private PDO $conn;
-        private UserDAO $userDAO;
+        private UserDAO $userDao;
 
-        public function __construct(PDO $conn, UserDAO $userDAO)
+        public function __construct(PDO $conn, UserDAO $userDao)
         {
             $this->conn = $conn;
-            $this->userDAO = $userDAO;
+            $this->userDao = $userDao;
         }
 
         public function buildFile(array $data) : File
@@ -22,13 +22,13 @@
         {
             $file = new File;
             
-            $file->name = $uploadedFile["name"];
-            $file->size = $uploadedFile["size"];
-            $file->uploaded = date("Y-m-d H:i:s");
-            $file->visibility = $visibility;
-            $file->path = "/" . $this->generateFileName();
-            $file->ownerId = $ownerId;
-            $file->allowedUsersId = ($visibility === "restricted") ? [] : null;
+            $file->setName($uploadedFile["name"]);
+            $file->setSize($uploadedFile["size"]);
+            $file->setUploadTime(date("Y-m-d H:i:s"));
+            $file->setVisibility($visibility);
+            $file->setPath("/" . $this->generateFileName());
+            $file->setOwnerId($ownerId);
+            $file->setAllowedUsersIdsArray(($visibility === "restrict") ? [] : null);
 
             $stmt = $this->conn->prepare("INSERT INTO files (
                 name, size, uploaded, visibility, path, owner_id
@@ -36,20 +36,20 @@
                 :name, :size, :uploaded, :visibility, :path, :owner_id
             )");
 
-            $stmt->bindParam(":name", $file->name);
-            $stmt->bindParam(":size", $file->size);
-            $stmt->bindParam(":uploaded", $file->uploaded);
-            $stmt->bindParam(":visibility", $file->visibility);
-            $stmt->bindParam(":path", $file->path);
-            $stmt->bindParam(":owner_id", $file->ownerId);
+            $stmt->bindParam(":name", $file->getName());
+            $stmt->bindParam(":size", $file->getSize());
+            $stmt->bindParam(":uploaded", $file->getUploadTime());
+            $stmt->bindParam(":visibility", $file->getVisibility());
+            $stmt->bindParam(":path", $file->getPath());
+            $stmt->bindParam(":owner_id", $file->getOwnerId());
 
             $stmt->execute();
 
-            $file->id = $this->conn->lastInsertId();
+            $file->setId($this->conn->lastInsertId());
             
-            // $this->userDAO->changeUpdadeUserUsedStorage($file->size);
+            // $this->userDAO->updadeUserUsedStorage($file->size);
 
-            move_uploaded_file($uploadedFile["tmp_name"], FILES_ROOT . $file->path);
+            move_uploaded_file($uploadedFile["tmp_name"], FILES_ROOT . $file->getPath());
 
             return $file;
         }

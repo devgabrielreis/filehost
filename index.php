@@ -7,7 +7,7 @@
 
     $userDao = new UserDAO(createDatabaseConnection());
 
-    if(!empty($_SESSION["token"]) && $userDao->getUserByToken($_SESSION["token"]))
+    if($userDao->getLoggedUser())
     {
         header("Location: " . BASE_URL . "/home.php");
         exit();

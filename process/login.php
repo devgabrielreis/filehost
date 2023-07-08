@@ -10,7 +10,7 @@
     $userDao = new UserDAO(createDatabaseConnection());
     $message = new Message();
 
-    if(!empty($_SESSION["token"]) && $userDao->getUserByToken($_SESSION["token"]))
+    if($userDao->getLoggedUser())
     {
         header("Location: " . BASE_URL . "/home.php");
         exit();
@@ -21,7 +21,7 @@
 
     $user = $userDao->getUserByEmail($email);
 
-    if(!$user || !password_verify($password, $user->passwordHash))
+    if(!$user->comparePassword($password))
     {
         $message->set("Invalid email or password", Message::TYPE_ERROR);
 
@@ -29,7 +29,7 @@
         exit();
     }
 
-    $_SESSION["token"] = $userDao->createToken($user->id, date("Y-m-d H:i:s", strtotime("1 day")));
+    $_SESSION["token"] = $userDao->createToken($user->getId(), date("Y-m-d H:i:s", strtotime("1 day")));
 
     $message->set("Welcome back!", Message::TYPE_SUCCESS);
 
