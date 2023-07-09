@@ -28,6 +28,14 @@
         exit();
     }
 
+    if(!$userDao->userHasEnoughStorageSpace($loggedUser->getId(), $_FILES["file"]["size"]))
+    {
+        $message->set("You don't have enough space to store this file", Message::TYPE_ERROR);
+
+        header("Location: " . BASE_URL . "/upload.php");
+        exit();
+    }
+
     $fileDao->saveUploadedFIle($_FILES["file"], $_POST["visibility"], $loggedUser->getId());
 
     $message->set("File uploaded successfully", Message::TYPE_SUCCESS);

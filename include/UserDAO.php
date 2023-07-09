@@ -5,6 +5,8 @@
     {
         private PDO $conn;
 
+        const USER_MAX_STORAGE_SPACE = 1000000000;
+
         public function __construct(PDO $conn)
         {
             $this->conn = $conn;
@@ -169,6 +171,31 @@
             }
 
             return $this->buildUser($stmt->fetch());
+        }
+
+        public function userHasEnoughStorageSpace(int $userId, int $fileSize) : bool
+        {
+            $stmt = $this->conn->prepare("SELECT used_storage FROM users WHERE id = :id");
+            $stmt->bindParam(":id", $userId);
+            $stmt->execute();
+
+            if($stmt->rowCount() === 0)
+            {
+                return false;
+            }
+
+            $data = $stmt->fetch();
+            $usedSpace = $data["used_storage"];
+
+            return $usedSpace + $fileSize <= $this::USER_MAX_STORAGE_SPACE;
+        }
+
+        public function updadeUserUsedStorage(int $userId, int $change) : void
+        {
+            $stmt = $this->conn->prepare("UPDATE users SET used_storage = used_storage + :change WHERE id = :id");
+            $stmt->bindParam(":id", $userId);
+            $stmt->bindParam(":change", $change);
+            $stmt->execute();
         }
 
         public function createToken(int $userId, string $tokenExpirationDate) : ?string

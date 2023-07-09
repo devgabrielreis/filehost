@@ -20,6 +20,11 @@
 
         public function saveUploadedFIle(array $uploadedFile, string $visibility, int $ownerId) : File
         {
+            if(!$this->userDao->userHasEnoughStorageSpace($ownerId, $uploadedFile["size"]))
+            {
+                throw new Exception("User " . $ownerId . " does not have enough storege space for uploade file.");
+            }
+
             $file = new File;
             
             $file->setName($uploadedFile["name"]);
@@ -47,7 +52,7 @@
 
             $file->setId($this->conn->lastInsertId());
             
-            // $this->userDAO->updadeUserUsedStorage($file->size);
+            $this->userDao->updadeUserUsedStorage($ownerId, $file->getSize());
 
             move_uploaded_file($uploadedFile["tmp_name"], FILES_ROOT . $file->getPath());
 

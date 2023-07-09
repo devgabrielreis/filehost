@@ -81,6 +81,8 @@
         public function getUserById(int $userId) : ?User;
         public function getUserByName(string $name) : ?User;
         public function getUserByEmail(string $email) : ?User;
+        public function userHasEnoughStorageSpace(int $userId, int $fileSize) : bool;
+        public function updadeUserUsedStorage(int $userId, int $change) : void;
         public function createToken(int $userId, string $tokenExpirationDate) : ?string;
         public function revokeToken(string $token) : void;
     }
