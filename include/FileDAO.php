@@ -15,7 +15,35 @@
 
         public function buildFile(array $data) : File
         {
-            return new File;
+            $file = new File();
+
+            $file->setId($data["id"]);
+            $file->setName($data["name"]);
+            $file->setSize($data["size"]);
+            $file->setUploadTime($data["uploaded"]);
+            $file->setVisibility($data["visibility"]);
+            $file->setPath($data["path"]);
+            $file->setOwnerId($data["owner_id"]);
+            $file->setAllowedUsersIdsArray(($file->getVisibility() === "restrict") ? $this->getFileAllowedUsers($file->getId()) : null);
+
+            return $file;
+        }
+
+        public function getFileAllowedUsers($fileId) : array
+        {
+            $stmt = $this->conn->prepare("SELECT user_id FROM permissions WHERE file_id = :file_id");
+            $stmt->bindParam(":file_id", $fileId);
+            $stmt->execute();
+
+            $data = $stmt->fetchAll();
+            $allowedUsers = [];
+
+            foreach($data as $user)
+            {
+                $allowedUsers[] = $user["user_id"];
+            }
+
+            return $allowedUsers;
         }
 
         public function saveUploadedFIle(array $uploadedFile, string $visibility, int $ownerId) : File
@@ -68,6 +96,23 @@
             while(file_exists(FILES_ROOT . "/" . $filename));
 
             return $filename;
+        }
+
+        public function getUserFiles(int $userId) : array
+        {
+            $stmt = $this->conn->prepare("SELECT * FROM files WHERE owner_id = :owner_id");
+            $stmt->bindParam(":owner_id", $userId);
+            $stmt->execute();
+
+            $data = $stmt->fetchAll();
+            $files = [];
+
+            foreach($data as $file)
+            {
+                $files[] = $this->buildFile($file);
+            }
+
+            return $files;
         }
     }
 ?>

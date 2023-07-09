@@ -104,6 +104,8 @@
     interface FileDAOInterface
     {
         public function buildFile(array $data) : File;
+        public function getFileAllowedUsers($fileId) : array;
         public function saveUploadedFIle(array $uploadedFile, string $visibility, int $ownerId) : File;
+        public function getUserFiles(int $userId) : array;
     }
 ?>
