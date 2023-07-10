@@ -15,7 +15,7 @@
     if(!$loggedUser)
     {
         $message->set("You are not logged in", Message::TYPE_ERROR);
-        header("Location: " . BASE_URL);
+        header("Location: /");
         exit();
     }
 
@@ -29,7 +29,7 @@
         if(!$loggedUser->comparePassword($password))
         {
             $message->set("Invalid password", Message::TYPE_ERROR);
-            header("Location: " . BASE_URL . "/account.php");
+            header("Location: /account.php");
             exit();
         }
 
@@ -37,7 +37,7 @@
         {
             $message->set("Invalid information", Message::TYPE_ERROR);
 
-            header("Location: " . BASE_URL . "/account.php");
+            header("Location: /account.php");
             exit();
         }
 
@@ -45,7 +45,7 @@
         {
             $message->set("The username needs to have between 3 and 20 characters", Message::TYPE_ERROR);
 
-            header("Location: " . BASE_URL . "/account.php");
+            header("Location: /account.php");
             exit();
         }
 
@@ -53,14 +53,14 @@
         {
             $message->set("This username is already in use", Message::TYPE_ERROR);
 
-            header("Location: " . BASE_URL . "/account.php");
+            header("Location: /account.php");
             exit();
         }
 
         $userDao->changeName($loggedUser->getId(), $name);
 
         $message->set("Username changed successfully", Message::TYPE_SUCCESS);
-        header("Location: " . BASE_URL . "/account.php");
+        header("Location: /account.php");
     }
     elseif($type === "changeemail")
     {
@@ -71,14 +71,14 @@
         {
             $message->set("Invalid information", Message::TYPE_ERROR);
 
-            header("Location: " . BASE_URL . "/account.php");
+            header("Location: /account.php");
             exit();
         }
 
         if(!$loggedUser->comparePassword($password))
         {
             $message->set("Invalid password", Message::TYPE_ERROR);
-            header("Location: " . BASE_URL . "/account.php");
+            header("Location: /account.php");
             exit();
         }
 
@@ -86,7 +86,7 @@
         {
             $message->set("Invalid information", Message::TYPE_ERROR);
 
-            header("Location: " . BASE_URL . "/account.php");
+            header("Location: /account.php");
             exit();
         }
 
@@ -94,7 +94,7 @@
         {
             $message->set("Invalid email", Message::TYPE_ERROR);
 
-            header("Location: " . BASE_URL . "/account.php");
+            header("Location: /account.php");
             exit();
         }
 
@@ -102,14 +102,14 @@
         {
             $message->set("This email is already in use", Message::TYPE_ERROR);
 
-            header("Location: " . BASE_URL . "/account.php");
+            header("Location: /account.php");
             exit();
         }
 
         $userDao->changeEmail($loggedUser->getId(), $email);
 
         $message->set("Email changed successfully", Message::TYPE_SUCCESS);
-        header("Location: " . BASE_URL . "/account.php");
+        header("Location: /account.php");
     }
     elseif($type === "changepassword")
     {
@@ -121,14 +121,14 @@
         {
             $message->set("Invalid information", Message::TYPE_ERROR);
 
-            header("Location: " . BASE_URL . "/account.php");
+            header("Location: /account.php");
             exit();
         }
 
         if(!$loggedUser->comparePassword($password))
         {
             $message->set("Invalid password", Message::TYPE_ERROR);
-            header("Location: " . BASE_URL . "/account.php");
+            header("Location: /account.php");
             exit();
         }
 
@@ -136,7 +136,7 @@
         {
             $message->set("The password needs to have between 8 and 20 characters", Message::TYPE_ERROR);
 
-            header("Location: " . BASE_URL . "/account.php");
+            header("Location: /account.php");
             exit();
         }
 
@@ -144,18 +144,18 @@
         {
             $message->set("The passwords you entered do not match", Message::TYPE_ERROR);
 
-            header("Location: " . BASE_URL . "/account.php");
+            header("Location: /account.php");
             exit();
         }
 
         $userDao->changePassword($loggedUser->getId(), password_hash($newPassword, PASSWORD_DEFAULT));
 
         $message->set("Password changed successfully", Message::TYPE_SUCCESS);
-        header("Location: " . BASE_URL . "/account.php");
+        header("Location: /account.php");
     }
     else
     {
-        header("Location: " . BASE_URL);
+        header("Location: /");
         exit();
     }
 ?>

@@ -16,7 +16,7 @@
     if(!$loggedUser)
     {
         $message->set("You are not logged in", Message::TYPE_ERROR);
-        header("Location: " . BASE_URL);
+        header("Location: /");
         exit();
     }
 
@@ -24,7 +24,7 @@
     {
         $message->set("Invalid information", Message::TYPE_ERROR);
 
-        header("Location: " . BASE_URL . "/upload.php");
+        header("Location: /upload.php");
         exit();
     }
 
@@ -32,7 +32,7 @@
     {
         $message->set("You don't have enough space to store this file", Message::TYPE_ERROR);
 
-        header("Location: " . BASE_URL . "/upload.php");
+        header("Location: /upload.php");
         exit();
     }
 
@@ -40,5 +40,5 @@
 
     $message->set("File uploaded successfully", Message::TYPE_SUCCESS);
 
-    header("Location: " . BASE_URL . "/home.php");
+    header("Location: /home.php");
 ?>

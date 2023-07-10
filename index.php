@@ -9,7 +9,7 @@
 
     if($userDao->getLoggedUser())
     {
-        header("Location: " . BASE_URL . "/home.php");
+        header("Location: /home.php");
         exit();
     }
 ?>
@@ -18,7 +18,7 @@
 
 <div>
     <h3>Sign in</h3>
-    <form action="<?php echo BASE_URL; ?>/process/login.php" method="POST">
+    <form action="/process/login.php" method="POST">
         <div>
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" placeholder="Enter your email" required>
@@ -37,7 +37,7 @@
 
 <div>
     <h3>Create account</h3>
-    <form action="<?php echo BASE_URL; ?>/process/register.php" method="POST">
+    <form action="/process/register.php" method="POST">
         <div>
             <label for="name">Username:</label>
             <input type="text" id="name" name="name" placeholder="Enter your username" required>

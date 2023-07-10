@@ -14,7 +14,7 @@
     if(!$loggedUser)
     {
         $message->set("You are not logged in", Message::TYPE_ERROR);
-        header("Location: " . BASE_URL);
+        header("Location: /");
         exit();
     }
 ?>
@@ -22,7 +22,7 @@
 <?php require_once(__DIR__ . "/templates/header.php"); ?>
 
 <div>
-    <form action="<?php echo BASE_URL; ?>/process/upload.php" method="POST" enctype="multipart/form-data">
+    <form action="/process/upload.php" method="POST" enctype="multipart/form-data">
         <div>
             <label for="file">File:</label>
             <input type="file" id="file" name="file" required>

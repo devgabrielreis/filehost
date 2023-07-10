@@ -14,7 +14,7 @@
     if(!$loggedUser)
     {
         $message->set("You are not logged in", Message::TYPE_ERROR);
-        header("Location: " . BASE_URL);
+        header("Location: /");
         exit();
     }
 ?>
@@ -23,7 +23,7 @@
 
 <div>
     <h3>Change username</h3>
-    <form action="<?php echo BASE_URL; ?>/process/modify_account.php" method="POST">
+    <form action="/process/modify_account.php" method="POST">
         <input type="hidden" name="type" value="changename">
 
         <div>
@@ -42,7 +42,7 @@
 
 <div>
     <h3>Change email</h3>
-    <form action="<?php echo BASE_URL; ?>/process/modify_account.php" method="POST">
+    <form action="/process/modify_account.php" method="POST">
         <input type="hidden" name="type" value="changeemail">
 
         <div>
@@ -61,7 +61,7 @@
 
 <div>
     <h3>Change password</h3>
-    <form action="<?php echo BASE_URL; ?>/process/modify_account.php" method="POST">
+    <form action="/process/modify_account.php" method="POST">
         <input type="hidden" name="type" value="changepassword">
 
         <div>

@@ -12,7 +12,7 @@
 
     if($userDao->getLoggedUser())
     {
-        header("Location: " . BASE_URL . "/home.php");
+        header("Location: /home.php");
         exit();
     }
 
@@ -25,7 +25,7 @@
     {
         $message->set("Invalid email or password", Message::TYPE_ERROR);
 
-        header("Location: " . BASE_URL);
+        header("Location: /");
         exit();
     }
 
@@ -33,5 +33,5 @@
 
     $message->set("Welcome back!", Message::TYPE_SUCCESS);
 
-    header("Location: " . BASE_URL . "/home.php");
+    header("Location: /home.php");
 ?>

@@ -3,6 +3,5 @@
     "dbHostEnv" : "FILEHOST_DB_HOST",
     "dbUserEnv" : "FILEHOST_DB_USER",
     "dbPassEnv" : "FILEHOST_DB_PASS",
-    "baseUrlEnv" : "FILEHOST_BASE_URL",
     "filesRootPath" : "FILEHOST_FILES_ROOT_PATH"
 }

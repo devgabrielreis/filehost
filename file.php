@@ -17,7 +17,7 @@
 
     if($fileId === null)
     {
-        header("Location: " . BASE_URL);
+        header("Location: /");
         exit();
     }
 
@@ -29,11 +29,11 @@
 
         if($loggedUser === null)
         {
-            header("Location: " . BASE_URL);
+            header("Location: /");
         }
         else
         {
-            header("Location: " . BASE_URL . "/home.php");
+            header("Location: /home.php");
         }
 
         exit();
@@ -45,11 +45,11 @@
 
         if($loggedUser === null)
         {
-            header("Location: " . BASE_URL);
+            header("Location: /");
         }
         else
         {
-            header("Location: " . BASE_URL . "/home.php");
+            header("Location: /home.php");
         }
 
         exit();
@@ -75,6 +75,6 @@
     <?php endif; ?>
 </div>
 
-<a href="<?php echo BASE_URL . "/process/download.php?id=" . $file->getId(); ?>">Download</a>
+<a href="<?php echo "/process/download.php?id=" . $file->getId(); ?>">Download</a>
 
 <?php require_once(__DIR__ . "/templates/footer.php"); ?>

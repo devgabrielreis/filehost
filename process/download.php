@@ -17,7 +17,6 @@
 
     if($fileId === null)
     {
-        // header("Location: " . BASE_URL);
         header("Location: /");
         exit();
     }
@@ -30,11 +29,11 @@
 
         if($loggedUser === null)
         {
-            header("Location: " . BASE_URL);
+            header("Location: /");
         }
         else
         {
-            header("Location: " . BASE_URL . "/home.php");
+            header("Location: /home.php");
         }
 
         exit();
@@ -46,11 +45,11 @@
 
         if($loggedUser === null)
         {
-            header("Location: " . BASE_URL);
+            header("Location: /");
         }
         else
         {
-            header("Location: " . BASE_URL . "/home.php");
+            header("Location: /home.php");
         }
 
         exit();
