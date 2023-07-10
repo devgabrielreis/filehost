@@ -31,7 +31,7 @@
 
 <h3>my files</h3>
 <?php foreach($fileDao->getUserFiles($loggedUser->getId()) as $file) : ?>
-    <p><a href="<?php echo BASE_URL . "/file.php?id=" . $file->getId(); ?>"><?php echo $file->getName() . " " . $file->getSize() . " " . $file->getUploadTime() . " " . $file->getVisibility(); ?></a></p>
+    <p><a href="<?php echo BASE_URL . "/file.php?id=" . $file->getId(); ?>"><?php var_dump($file); ?></a></p>
 <?php endforeach; ?>
 
 <?php require_once(__DIR__ . "/templates/footer.php"); ?>

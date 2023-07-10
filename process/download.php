@@ -1,11 +1,11 @@
 <?php
     session_start();
 
-    require_once(__DIR__ . "/config.php");
-    require_once(__DIR__ . "/include/db.php");
-    require_once(__DIR__ . "/include/UserDAO.php");
-    require_once(__DIR__ . "/include/FileDAO.php");
-    require_once(__DIR__ . "/include/Message.php");
+    require_once(__DIR__ . "/../config.php");
+    require_once(__DIR__ . "/../include/db.php");
+    require_once(__DIR__ . "/../include/UserDAO.php");
+    require_once(__DIR__ . "/../include/FileDAO.php");
+    require_once(__DIR__ . "/../include/Message.php");
 
     $userDao = new UserDAO(createDatabaseConnection());
     $fileDao = new FileDAO(createDatabaseConnection(), $userDao);
@@ -17,7 +17,8 @@
 
     if($fileId === null)
     {
-        header("Location: " . BASE_URL);
+        // header("Location: " . BASE_URL);
+        header("Location: /");
         exit();
     }
 
@@ -54,27 +55,7 @@
 
         exit();
     }
+
+    header('Content-Disposition: attachment; filename="' . $file->getName() . '"');
+    readfile(FILES_ROOT . $file->getPath());
 ?>
-
-<?php require_once(__DIR__ . "/templates/header.php"); ?>
-
-<div>
-    <p><?php echo $file->getId(); ?></p>
-    <p><?php echo $file->getName(); ?></p>
-    <p><?php echo $file->getSize(); ?></p>
-    <p><?php echo $file->getUploadTime(); ?></p>
-    <p><?php echo $file->getVisibility(); ?></p>
-    <p><?php echo $file->getPath(); ?></p>
-    <p><?php echo $file->getOwnerId(); ?></p>
-    <p><?php var_dump($file->getAllowedUsersIds()); ?></p>
-</div>
-
-<div>
-    <?php if($file->isOwner($loggedUser)) : ?>
-        <p>You are the owner of this file</p>
-    <?php endif; ?>
-</div>
-
-<a href="<?php echo BASE_URL . "/process/download.php?id=" . $file->getId(); ?>">Download</a>
-
-<?php require_once(__DIR__ . "/templates/footer.php"); ?>

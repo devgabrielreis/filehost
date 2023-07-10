@@ -5,7 +5,7 @@
     {
         private PDO $conn;
 
-        const USER_MAX_STORAGE_SPACE = 1000000000;
+        const USER_MAX_STORAGE_SPACE = 1000000000; // 1 GB em bytes
 
         public function __construct(PDO $conn)
         {

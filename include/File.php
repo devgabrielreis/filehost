@@ -99,6 +99,46 @@
         {
             return $this->allowedUsersIds;
         }
+
+        public function hasAccess(?User $user) : bool
+        {
+            if($user === null)
+            {
+                return $this->visibility === "public";
+            }
+
+            if($this->visibility === "public")
+            {
+                return true;
+            }
+
+            if($this->ownerId === $user->getId())
+            {
+                return true;
+            }
+
+            if($this->visibility === "private")
+            {
+                return false;
+            }
+
+            if($this->allowedUsersIds === null)
+            {
+                return false;
+            }
+
+            return in_array($user->getId(), $this->allowedUsersIds);
+        }
+
+        public function isOwner(?User $user) : bool
+        {
+            if($user === null)
+            {
+                return false;
+            }
+
+            return $user->getId() === $this->ownerId;
+        }
     }
 
     interface FileDAOInterface
@@ -106,6 +146,7 @@
         public function buildFile(array $data) : File;
         public function getFileAllowedUsers($fileId) : array;
         public function saveUploadedFIle(array $uploadedFile, string $visibility, int $ownerId) : File;
+        public function getFile(int $fileId) : ?File;
         public function getUserFiles(int $userId) : array;
     }
 ?>

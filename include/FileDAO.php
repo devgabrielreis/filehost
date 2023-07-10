@@ -98,6 +98,22 @@
             return $filename;
         }
 
+        public function getFile(int $fileId) : ?File
+        {
+            $stmt = $this->conn->prepare("SELECT * FROM files WHERE id = :id");
+            $stmt->bindParam(":id", $fileId);
+            $stmt->execute();
+
+            if($stmt->rowCount() === 0)
+            {
+                return null;
+            }
+
+            $data = $stmt->fetch();
+
+            return $this->buildFile($data);
+        }
+
         public function getUserFiles(int $userId) : array
         {
             $stmt = $this->conn->prepare("SELECT * FROM files WHERE owner_id = :owner_id");
