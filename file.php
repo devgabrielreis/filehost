@@ -75,6 +75,6 @@
     <?php endif; ?>
 </div>
 
-<a href="<?php echo "/process/download.php?id=" . $file->getId(); ?>">Download</a>
+<a href="<?php echo "/process/file/download.php?id=" . $file->getId(); ?>">Download</a>
 
 <?php require_once(__DIR__ . "/templates/footer.php"); ?>

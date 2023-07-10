@@ -1,11 +1,11 @@
 <?php
     session_start();
 
-    require_once(__DIR__ . "/../include/db.php");
-    require_once(__DIR__ . "/../include/Message.php");
-    require_once(__DIR__ . "/../include/File.php");
-    require_once(__DIR__ . "/../include/FileDAO.php");
-    require_once(__DIR__ . "/../include/UserDAO.php");
+    require_once(__DIR__ . "/../../include/db.php");
+    require_once(__DIR__ . "/../../include/Message.php");
+    require_once(__DIR__ . "/../../include/File.php");
+    require_once(__DIR__ . "/../../include/FileDAO.php");
+    require_once(__DIR__ . "/../../include/UserDAO.php");
 
     $userDao = new UserDAO(createDatabaseConnection());
     $fileDao = new FileDAO(createDatabaseConnection(), $userDao);

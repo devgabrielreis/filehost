@@ -23,9 +23,7 @@
 
 <div>
     <h3>Change username</h3>
-    <form action="/process/modify_account.php" method="POST">
-        <input type="hidden" name="type" value="changename">
-
+    <form action="/process/user/change_name.php" method="POST">
         <div>
             <label for="name">New username:</label>
             <input type="text" id="name" name="name" placeholder="Enter your new username" required>
@@ -42,9 +40,7 @@
 
 <div>
     <h3>Change email</h3>
-    <form action="/process/modify_account.php" method="POST">
-        <input type="hidden" name="type" value="changeemail">
-
+    <form action="/process/user/change_email.php" method="POST">
         <div>
             <label for="email">New email:</label>
             <input type="email" id="email" name="email" placeholder="Enter your new email" required>
@@ -61,9 +57,7 @@
 
 <div>
     <h3>Change password</h3>
-    <form action="/process/modify_account.php" method="POST">
-        <input type="hidden" name="type" value="changepassword">
-
+    <form action="/process/user/change_password.php" method="POST">
         <div>
             <label for="password">Old password:</label>
             <input type="password" id="password" name="password" placeholder="Enter your old password" required>
