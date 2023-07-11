@@ -71,7 +71,23 @@
 
 <div>
     <?php if($file->isOwner($loggedUser)) : ?>
-        <p>You are the owner of this file</p>
+        <form action="/process/file/delete.php" method="POST">
+            <p>Delete file</p>
+            <input type="hidden" name="id" value="<?php echo $file->getId(); ?>">
+
+            <div>
+                <label for="password">Type your password to confirm:</label>
+                <input type="password" name="password" id="password">
+            </div>
+
+            <input type="submit" value="Delete">
+        </form>
+
+        <a href="/process/file/rename.php">renomear</a>
+        <a href="/process/file/change_visibility.php">mudar privacidade</a>
+        <?php if($file->getVisibility() === "restrict") : ?>
+            <a href="/process/file/add_user.php">adicionar usuario</a>
+        <?php endif; ?>
     <?php endif; ?>
 </div>
 

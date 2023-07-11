@@ -130,5 +130,29 @@
 
             return $files;
         }
+
+        public function deleteFile(int $fileId) : void
+        {
+            $stmt = $this->conn->prepare("SELECT path FROM files WHERE id = :id");
+            $stmt->bindParam(":id", $fileId);
+            $stmt->execute();
+
+            if($stmt->rowCount() === 0)
+            {
+                return;
+            }
+
+            $data = $stmt->fetch();
+
+            $stmt = $this->conn->prepare("DELETE FROM permissions WHERE file_id = :file_id");
+            $stmt->bindParam(":file_id", $fileId);
+            $stmt->execute();
+
+            $stmt = $this->conn->prepare("DELETE FROM files WHERE id = :id");
+            $stmt->bindParam(":id", $fileId);
+            $stmt->execute();
+
+            unlink(FILES_ROOT . "/" . $data["path"]);
+        }
     }
 ?>
