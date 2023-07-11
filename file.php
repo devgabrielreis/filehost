@@ -77,13 +77,29 @@
 
             <div>
                 <label for="password">Type your password to confirm:</label>
-                <input type="password" name="password" id="password">
+                <input type="password" name="password" id="password" required>
             </div>
 
             <input type="submit" value="Delete">
         </form>
 
-        <a href="/process/file/rename.php">renomear</a>
+        <form action="/process/file/rename.php" method="POST">
+            <p>Rename file</p>
+            <input type="hidden" name="id" value="<?php echo $file->getId(); ?>">
+
+            <div>
+                <label for="newname">Enter the new name:</label>
+                <input type="text" name="newname" id="newname" required>
+            </div>
+
+            <div>
+                <label for="password">Type your password to confirm:</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+
+            <input type="submit" value="Rename">
+        </form>
+
         <a href="/process/file/change_visibility.php">mudar privacidade</a>
         <?php if($file->getVisibility() === "restrict") : ?>
             <a href="/process/file/add_user.php">adicionar usuario</a>

@@ -148,6 +148,7 @@
         public function saveUploadedFIle(array $uploadedFile, string $visibility, int $ownerId) : File;
         public function getFile(int $fileId) : ?File;
         public function getUserFiles(int $userId) : array;
+        public function renameFile(int $fileId, string $newName) : void;
         public function deleteFile(int $fileId) : void;
     }
 ?>

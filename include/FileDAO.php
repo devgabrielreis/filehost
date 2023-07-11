@@ -55,7 +55,7 @@
 
             $file = new File;
             
-            $file->setName($uploadedFile["name"]);
+            $file->setName(basename($uploadedFile["name"]));
             $file->setSize($uploadedFile["size"]);
             $file->setUploadTime(date("Y-m-d H:i:s"));
             $file->setVisibility($visibility);
@@ -131,9 +131,17 @@
             return $files;
         }
 
+        public function renameFile(int $fileId, string $newName) : void
+        {
+            $stmt = $this->conn->prepare("UPDATE files SET name = :name WHERE id = :id");
+            $stmt->bindParam(":name", $newName);
+            $stmt->bindParam(":id", $fileId);
+            $stmt->execute();
+        }
+
         public function deleteFile(int $fileId) : void
         {
-            $stmt = $this->conn->prepare("SELECT path FROM files WHERE id = :id");
+            $stmt = $this->conn->prepare("SELECT path, size, owner_id FROM files WHERE id = :id");
             $stmt->bindParam(":id", $fileId);
             $stmt->execute();
 
@@ -143,6 +151,9 @@
             }
 
             $data = $stmt->fetch();
+            $path = $data["path"];
+            $size = $data["size"];
+            $ownerId = $data["owner_id"];
 
             $stmt = $this->conn->prepare("DELETE FROM permissions WHERE file_id = :file_id");
             $stmt->bindParam(":file_id", $fileId);
@@ -152,7 +163,9 @@
             $stmt->bindParam(":id", $fileId);
             $stmt->execute();
 
-            unlink(FILES_ROOT . "/" . $data["path"]);
+            $this->userDao->updadeUserUsedStorage($ownerId, -$size);
+
+            unlink(FILES_ROOT . "/" . $path);
         }
     }
 ?>
